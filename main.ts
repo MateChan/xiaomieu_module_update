@@ -14,7 +14,7 @@ async function checkFeed() {
   const { id, title: { value } } = entries[0];
   const kv = await Deno.openKv();
   const latestId = await kv.get<string>(["latestId"]);
-  if (id === latestId.value) {
+  if (id !== latestId.value) {
     await kv.set(["latestId"], id);
     const client = new Webhook(DISCORD_WEBHOOK_URL);
     client.post(
